@@ -14,13 +14,13 @@ dotenv.load_dotenv(dotenv_file)
 
 
 class Event:
-    def __init__(self, schedule_row):
-        self.container = schedule_row['container']
-        self.time = datetime.strptime(schedule_row['datetime'], "%d/%m/%y %H:%M")
-        self.temperature = schedule_row['temperature']
+    def __init__(self, plan_row):
+        self.container = plan_row['container']
+        self.time = time.mktime(datetime.strptime(plan_row['datetime'], "%d/%m/%Y %H:%M").timetuple())
+        self.temperature = plan_row['temperature']
 
 
-def get_event_plan() -> list:
+def get_events_list() -> list:
     file = [el for el in os.listdir() if '.csv' in el].pop()
     open_file = open(file, 'r')
     reader = DictReader(open_file)
@@ -54,51 +54,40 @@ def sign_in(sign_in_driver: webdriver):
     time.sleep(3)
 
 
-def set_temperature(container: str, temperature: str, setting_driver):
-    container_button = setting_driver.find_element(By.XPATH, f"//*[contains(text(), '{container}')]")
-    container_button.click()
-    menu_expand = setting_driver.find_element(By.CSS_SELECTOR, 'div.k-icon.k-collapse-prev')
-    menu_expand.click()
+def set_temperature(container: str, temperature: str):
+    driver = get_web_driver()
+    driver.get(URL)
+    driver.maximize_window()
+    sign_in(driver)
 
-    commands_button = setting_driver.find_element(By.PARTIAL_LINK_TEXT, 'Commands')
-    commands_button.click()
+    driver.find_element(By.XPATH, f"//*[contains(text(), '{container}')]").click()
+    driver.find_element(By.CSS_SELECTOR, 'div.k-icon.k-collapse-prev').click()
+    driver.find_element(By.PARTIAL_LINK_TEXT, 'Commands').click()
 
     time.sleep(3)
-    executes = setting_driver.find_elements(By.CSS_SELECTOR, "a.k-grid-executeCommand.k-button")
+    executes = driver.find_elements(By.CSS_SELECTOR, "a.k-grid-executeCommand.k-button")
 
     change_temp_execute = executes[2]
     change_temp_execute.click()
     time.sleep(2)
-    temperature_input_field = setting_driver.find_element(By.XPATH, "//input[@placeholder='Set point']")
+    temperature_input_field = driver.find_element(By.XPATH, "//input[@placeholder='Set point']")
     temperature_input_field.send_keys(temperature)
     #
     # execute_button = setting_driver.find_element(By.CSS_SELECTOR, 'button.btn.btn-primary')
     # execute_button.click()
 
 
-def create_event_schedule(events: list, driver: webdriver):
+def create_event_schedule(events: list):
     s = sched.scheduler(time.time, time.sleep)
     for event in events:
-        kwargs = {'container': event.container, 'temperature': event.temperature, 'setting_driver': driver}
+        kwargs = {'container': event.container, 'temperature': event.temperature}
         s.enterabs(event.time, 0, set_temperature, kwargs=kwargs)
     s.run()
 
 
 def run_program():
-    plan = get_event_plan()
-    click_container = plan[0].container
-    temperature_to_set = plan[0].temperature
-    event_datetime = plan[0].time
-
-    driver = get_web_driver()
-    driver.get(URL)
-    driver.maximize_window()
-    sign_in(driver)
-
-    set_temperature(
-        container=click_container,
-        temperature=temperature_to_set,
-        setting_driver=driver)
+    events_list = get_events_list()
+    create_event_schedule(events_list)
 
 
 if __name__ == '__main__':
