@@ -1,12 +1,10 @@
 import os
 import dotenv
-from datetime import datetime
-from csv import DictReader
+import time
+import sched
 from selenium import webdriver
 from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
-import time
-import sched
 from event import get_events_list
 
 URL = 'https://gms.myreefer.com/ProActtransport/Logon'
@@ -58,6 +56,7 @@ def set_temperature(container: str, temperature: str):
     temperature_input_field.send_keys(temperature)
 
     # driver.find_element(By.CSS_SELECTOR, 'button.btn.btn-primary').click()
+    time.sleep(60)
 
 
 def create_and_run_event_schedule(events: list):
