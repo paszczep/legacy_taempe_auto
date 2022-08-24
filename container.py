@@ -55,7 +55,7 @@ def set_temperature(container: str, temperature: str):
     temperature_input_field = driver.find_element(By.XPATH, "//input[@placeholder='Set point']")
     temperature_input_field.send_keys(temperature)
 
-    # driver.find_element(By.CSS_SELECTOR, 'button.btn.btn-primary').click()
+    driver.find_element(By.CSS_SELECTOR, 'button.btn.btn-primary').click()
     time.sleep(60)
 
 
