@@ -25,5 +25,3 @@ def get_events_list() -> list:
             f'{event.temperature}°C',
             sep='\t')
     return schedule
-
-
