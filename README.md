@@ -11,7 +11,7 @@
 ## II. Standard operation
   1. Configure datetime, container and temperature to be set in **schedule.csv** file
   2. If the set datetime is in the past program will execute its task immediately after launching
-  3. If there is no temperature given for a container program will ignore that
+  3. If there is no temperature given for a container program will ignore that row
   4. Launch Terminal app
   5. In Terminal navigate to where the app files are - command for navigating (mac/Windows/Linux) is `cd FolderName`
   6. Launch virtual environment - `pipenv shell`
