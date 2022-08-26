@@ -9,7 +9,7 @@ I. Running for the first time
   6. Provide program with Your login and password - 'python app.py login' -> Enter
 
 II. Standard operation
-  1. Configure datetime, container and temperature to be set
+  1. Configure datetime, container and temperature to be set in schedule.csv file
   2. If the set datetime is in the past program will execute its task immediately after launching
   3. If there is no temperature given program will ignore that row
   4. Launch Terminal app
@@ -19,7 +19,8 @@ II. Standard operation
   8. You will be displayed container name, datetime and temperatures to be set
   
  III. Short version
-  1. Terminal
-  2. Navigate to app directory
-  3. Command 'pipenv shell'
-  4. Command 'python app.py'
+  1. Set time, container and temperature in schedule.csv
+  2. Terminal
+  3. Navigate to app directory
+  4. Command 'pipenv shell'
+  5. Command 'python app.py'
