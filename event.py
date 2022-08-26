@@ -14,8 +14,9 @@ class Event:
 
 
 def get_events_list() -> list:
-    file = [el for el in os.listdir() if 'schedule.csv' in el].pop()
-    open_file = open(file, 'r')
+    base_dir = os.path.dirname(__file__)
+    file_dir = os.path.join(base_dir, 'schedule.csv')
+    open_file = open(file_dir, 'r')
     reader = DictReader(open_file)
     schedule = [Event(row) for row in reader if row['temperature'] != '']
     for event in schedule:
