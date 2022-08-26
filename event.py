@@ -17,7 +17,7 @@ def get_events_list() -> list:
     file = [el for el in os.listdir() if '.csv' in el].pop()
     open_file = open(file, 'r')
     reader = DictReader(open_file)
-    schedule = [Event(row) for row in reader]
+    schedule = [Event(row) for row in reader if row['temperature'] != '']
     for event in schedule:
         print(
             datetime.fromtimestamp(event.time).strftime(DATETIME_FORMAT),

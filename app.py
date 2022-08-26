@@ -11,7 +11,8 @@ def try_except():
         run_program(driver)
     except Exception as ex:
         print(f'{ex}')
-        time.sleep(15)
+        driver.close()
+        time.sleep(20)
         try_except()
     finally:
         driver.close()

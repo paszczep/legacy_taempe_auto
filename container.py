@@ -4,7 +4,8 @@ import time
 import sched
 from selenium import webdriver
 from webdriver_manager.chrome import ChromeDriverManager
-from selenium.webdriver.chrome.service import Service
+from selenium.webdriver.common.action_chains import ActionChains
+# from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from event import get_events_list
 
@@ -13,10 +14,6 @@ SLEEP = 2
 
 
 def get_web_driver() -> webdriver:
-    # root_dir = os.path.dirname(__file__)
-    # driver_path = os.path.join(root_dir, 'chromedriver.exe')
-    # service = Service(driver_path)
-    # application_webdriver = webdriver.Chrome(service=service)
     app_webdriver = webdriver.Chrome(ChromeDriverManager().install())
     return app_webdriver
 
@@ -42,7 +39,6 @@ def sign_in(sign_in_driver: webdriver):
 
 
 def set_temperature(container: str, temperature: str, driver: webdriver):
-    # driver = get_web_driver()
     driver.get(URL)
     driver.maximize_window()
     sign_in(driver)
@@ -57,9 +53,11 @@ def set_temperature(container: str, temperature: str, driver: webdriver):
     time.sleep(SLEEP)
     temperature_input_field = driver.find_element(By.XPATH, "//input[@placeholder='Set point']")
     temperature_input_field.send_keys(temperature)
+    driver.implicitly_wait(SLEEP)
 
-    button = driver.find_element(By.CSS_SELECTOR, 'button.btn.btn-primary')
-    # print(button)
+    button = driver.find_element(By.ID, 'temperatureSetpointExecuteBtn')
+    driver.implicitly_wait(SLEEP)
+    ActionChains(driver).move_to_element(button).click(button).perform()
     time.sleep(SLEEP*15)
 
 
