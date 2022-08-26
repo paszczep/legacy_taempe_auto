@@ -2,6 +2,7 @@ import sys
 from container import run_program, get_web_driver
 import dotenv
 import os
+import time
 
 
 def try_except():
@@ -10,6 +11,7 @@ def try_except():
         run_program(driver)
     except Exception as ex:
         print(f'{ex}')
+        time.sleep(15)
         try_except()
     finally:
         driver.close()
