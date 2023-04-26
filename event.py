@@ -12,6 +12,12 @@ class Event:
         self.time = time.mktime(datetime.strptime(plan_row['datetime'], DATETIME_FORMAT).timetuple())
         self.temperature = plan_row['temperature']
 
+    def __str__(self):
+        return '\t'.join([
+            datetime.fromtimestamp(self.time).strftime(DATETIME_FORMAT),
+            self.container,
+            f'{self.temperature}°C'])
+
 
 def get_events_list() -> list:
     base_dir = os.path.dirname(__file__)
@@ -20,9 +26,5 @@ def get_events_list() -> list:
     reader = DictReader(open_file)
     schedule = [Event(row) for row in reader if row['temperature'] != '']
     for event in schedule:
-        print(
-            datetime.fromtimestamp(event.time).strftime(DATETIME_FORMAT),
-            event.container,
-            f'{event.temperature}°C',
-            sep='\t')
+        print(event)
     return schedule

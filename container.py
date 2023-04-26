@@ -38,7 +38,12 @@ def sign_in(sign_in_driver: webdriver):
     time.sleep(SLEEP)
 
 
-def set_temperature(container: str, temperature: str, driver: webdriver):
+def set_temperature(
+        container: str,
+        temperature: str,
+        # driver: webdriver
+):
+    driver = get_web_driver()
     driver.get(URL)
     driver.maximize_window()
     sign_in(driver)
@@ -57,18 +62,35 @@ def set_temperature(container: str, temperature: str, driver: webdriver):
 
     button = driver.find_element(By.ID, 'temperatureSetpointExecuteBtn')
     driver.implicitly_wait(SLEEP)
-    ActionChains(driver).move_to_element(button).click(button).perform()
+    # ActionChains(driver).move_to_element(button).click(button).perform()
     time.sleep(SLEEP*15)
 
 
-def create_and_run_event_schedule(events: list, driver: webdriver):
+def create_and_run_event_schedule(
+        events: list,
+        # driver: webdriver
+):
     s = sched.scheduler(time.time, time.sleep)
     for event in events:
-        kwargs = {'container': event.container, 'temperature': event.temperature, 'driver': driver}
+        kwargs = {
+            'container': event.container,
+            'temperature': event.temperature,
+            # 'driver': driver
+        }
         s.enterabs(event.time, 0, set_temperature, kwargs=kwargs)
     s.run()
 
 
-def run_program(driver: webdriver):
+def run_program(
+        # driver: webdriver
+):
     events_list = get_events_list()
-    create_and_run_event_schedule(events_list, driver)
+    create_and_run_event_schedule(
+        events_list,
+        # driver
+    )
+
+
+if __name__ == '__main__':
+    for event in get_events_list():
+        print(event)

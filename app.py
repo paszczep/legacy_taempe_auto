@@ -1,21 +1,18 @@
 import sys
-from container import run_program, get_web_driver
+from container import run_program
 import dotenv
 import os
 import time
 
 
 def try_except():
-    driver = get_web_driver()
     try:
-        run_program(driver)
+        run_program()
     except Exception as ex:
         print(f'{ex}')
-        driver.close()
+        # driver.close()
         time.sleep(20)
         try_except()
-    finally:
-        driver.close()
 
 
 def setup():
