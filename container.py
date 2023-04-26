@@ -62,8 +62,9 @@ def set_temperature(
 
     button = driver.find_element(By.ID, 'temperatureSetpointExecuteBtn')
     driver.implicitly_wait(SLEEP)
-    # ActionChains(driver).move_to_element(button).click(button).perform()
+    ActionChains(driver).move_to_element(button).click(button).perform()
     time.sleep(SLEEP*15)
+    driver.close()
 
 
 def create_and_run_event_schedule(
